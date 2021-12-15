@@ -1,0 +1,25 @@
+name: Pull ip2asn dump
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: Fetching data
+        run: npm start
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ip2asn
+          files: ip2asn.tsv
